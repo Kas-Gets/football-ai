@@ -1,0 +1,20 @@
+# Ignore the virtual environment
+venv/
+.venv/
+
+# Ignore large downloaded models and video data
+*.pt
+*.mp4
+*.avi
+runs/
+
+# Ignore Python cache and build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+build/
+dist/
+*.egg-info/
