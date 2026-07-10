@@ -6,6 +6,7 @@ venv/
 *.pt
 *.mp4
 *.avi
+training/football-players-detection-1/
 runs/
 
 # Ignore Python cache and build artifacts
