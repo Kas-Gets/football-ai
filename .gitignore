@@ -6,6 +6,7 @@ venv/
 *.pt
 *.mp4
 *.avi
+*.pkl
 training/football-players-detection-1/
 runs/
 
