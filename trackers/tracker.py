@@ -79,7 +79,7 @@ class Tracker:
         
         return tracks
     
-    def draw_ellipse(self, frame, bbox, color, track_id):
+    def draw_ellipse(self, frame, bbox, color, track_id = None):
         y2 = int(bbox[3])
         x_center, _ = get_center_of_bbox(bbox)
         width = get_bbox_width(bbox)
@@ -96,6 +96,31 @@ class Tracker:
             lineType=cv2.LINE_AA
         )
 
+        rectangle_width = 40
+        rectangle_height = 20
+        X1_rect = x_center - rectangle_width // 2
+        Y1_rect = (y2 - rectangle_height // 2)+15
+        X2_rect = x_center + rectangle_width // 2
+        Y2_rect = (y2 + rectangle_height // 2)+15
+
+        if track_id is not None:
+            cv2.rectangle(frame,
+                                (int(X1_rect), int(Y1_rect)),
+                                (int(X2_rect), int(Y2_rect)), 
+                                color, 
+                                cv2.FILLED)
+            x1_text = X1_rect + 12
+            if track_id > 99:
+                x1_text -= 10
+
+            cv2.putText(frame, 
+                        str (track_id),
+                        (int(x1_text), int(Y1_rect + 15)), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 
+                        0.5, 
+                        (0, 0, 0), 1, 
+                        2)
+                     
         return frame
 
     def draw_annotations(self, video_frames, tracks):
@@ -113,7 +138,7 @@ class Tracker:
 
             # Draw referees
             for track_id, referee in referee_dict.items():
-                frame = self.draw_ellipse(frame, referee["bbox"],(0, 0, 255),track_id)
+                frame = self.draw_ellipse(frame, referee["bbox"],(0, 0, 255))
 
             output_video_frames.append(frame)
 
