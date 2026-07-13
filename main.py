@@ -22,7 +22,7 @@ def main():
         cropped_player = frame[int(bbox[1]):int(bbox[3]), int(bbox[0]):int(bbox[2])]
 
         #save cropped player image
-        cv2.imwrite(f'output_videos/player_{track_id}.jpg', cropped_player)
+        cv2.imwrite(f'output_images/player_{track_id}.jpg', cropped_player)
 
     #Draw output
     ##Draw object Tracks
