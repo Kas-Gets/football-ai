@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 from ultralytics import YOLO
 import supervision as sv 
 import pickle
@@ -122,6 +123,20 @@ class Tracker:
                         2)
                      
         return frame
+    
+    def draw_triangle(self, frame, bbox, color):
+        y = int(bbox[1])
+        x,_ = get_center_of_bbox(bbox)
+
+        triangle_points = np.array([
+            [x, y - 10],  # Top point
+            [x - 10, y - 20],  # Bottom left point
+            [x + 10, y - 20]   # Bottom right point
+        ])
+        cv2.drawContours(frame, [triangle_points], 0, color, cv2.FILLED)
+        cv2.drawContours(frame, [triangle_points], 0, (0, 0, 0), 2)  # Black border   
+
+        return frame     
 
     def draw_annotations(self, video_frames, tracks):
         output_video_frames = []
@@ -139,6 +154,10 @@ class Tracker:
             # Draw referees
             for track_id, referee in referee_dict.items():
                 frame = self.draw_ellipse(frame, referee["bbox"],(0, 0, 255))
+
+            # Draw ball
+            for track_id, ball in ball_dict.items():
+                frame = self.draw_triangle(frame, ball["bbox"],(255, 0, 0))
 
             output_video_frames.append(frame)
 
