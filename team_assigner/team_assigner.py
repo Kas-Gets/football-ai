@@ -61,7 +61,7 @@ class TeamAssigner:
         player_color = self.get_player_color(frame, player_bbox)
 
         team_id = self.kmeans.predict(player_color.reshape(1, -1))[0]
-        team_id = 1
+        team_id = 1 if team_id == 0 else 2  # Map cluster index to team ID (1 or 2)
 
         self.player_team_dict[player_id] = team_id
 
