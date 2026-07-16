@@ -14,6 +14,8 @@ def main():
                                          read_from_stub=True, 
                                          stub_path='stubs/track_stubs.pkl')
     
+    #Interpolate Ball Position
+    tracks['ball'] = tracker.interpolate_ball_positions(tracks['ball'])
 
     #save cropped images of players
     for track_id, player in tracks['players'][0].items():
