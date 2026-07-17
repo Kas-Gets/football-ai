@@ -138,6 +138,7 @@ class Tracker:
         return frame
     
     def draw_triangle(self, frame, bbox, color):
+    
         y = int(bbox[1])
         x,_ = get_center_of_bbox(bbox)
 
@@ -150,8 +151,25 @@ class Tracker:
         cv2.drawContours(frame, [triangle_points], 0, (0, 0, 0), 2)  # Black border   
 
         return frame     
+    
+    def draw_team_ball_control(self, frame, frame_num, team_ball_control):
+        #Draw a semi transparent triangle
+        overlay = frame.copy()
+        cv2.rectangle(overlay, (1350, 850), (1900, 970), (255, 255, 255), -1)
+        alpha= 0.4
+        cv2.addWeighted(overlay, alpha, frame, 1-alpha, 0, frame)
 
-    def draw_annotations(self, video_frames, tracks):
+        team_ball_control_till_frame = team_ball_control[:frame_num+1]
+        #Get the number of time each team had ball control
+        team_1_num_frames = team_ball_control_till_frame[team_ball_control_till_frame==1].shape[0]
+        team_2_num_frames = team_ball_control_till_frame[team_ball_control_till_frame==2].shape[0]
+        team_1 = team_1_num_frames/(team_1_num_frames+team_2_num_frames)
+        team_2 = team_2_num_frames/(team_1_num_frames+team_2_num_frames)
+
+        return frame
+
+
+    def draw_annotations(self, video_frames, tracks, team_ball_control):
         output_video_frames = []
         for frame_num, frame in enumerate(video_frames):
             frame = frame.copy()
@@ -174,6 +192,9 @@ class Tracker:
             # Draw ball
             for track_id, ball in ball_dict.items():
                 frame = self.draw_triangle(frame, ball["bbox"],(255, 0, 0))
+
+            #Draw team ball control
+            frame = self.draw_team_ball_control(frame, frame_num, team_ball_control)
 
             output_video_frames.append(frame)
 

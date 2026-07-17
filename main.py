@@ -1,3 +1,4 @@
+import numpy as np
 from utils.video_utils import read_video, save_video
 from trackers import Tracker
 import cv2
@@ -44,17 +45,23 @@ def main():
 
     # Assign ball aquisition to players
     player_assigner = PlayerBallAssigner()
+    team_ball_control = []
     for frame_num, player_track in enumerate(tracks['players']):
         ball_bbox = tracks['ball'][frame_num][1]['bbox'] if 1 in tracks['ball'][frame_num] else None
         assigned_player = player_assigner.assign_ball_to_players(player_track, ball_bbox)
         
         if assigned_player != -1:
             tracks['players'][frame_num][assigned_player]['has_ball'] = True
+            team_ball_control.append(tracks['players'][frame_num][assigned_player]['team'])
+        else:
+            team_ball_control.append(team_ball_control[-1])
+
+    team_ball_control = np.array(team_ball_control)
 
             
     #Draw output
     ##Draw object Tracks
-    output_video_frames = tracker.draw_annotations(video_frames, tracks)
+    output_video_frames = tracker.draw_annotations(video_frames, tracks, team_ball_control)
 
     # Save the video frames to an output video file    
     save_video(output_video_frames, 'output_videos/output.mp4')
