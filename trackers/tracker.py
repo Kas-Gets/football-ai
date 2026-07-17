@@ -157,7 +157,7 @@ class Tracker:
         overlay = frame.copy()
         cv2.rectangle(overlay, (1350, 850), (1900, 970), (255, 255, 255), -1)
         alpha= 0.4
-        cv2.addWeighted(overlay, alpha, frame, 1-alpha, 0, frame)
+        cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
 
         team_ball_control_till_frame = team_ball_control[:frame_num+1]
         #Get the number of time each team had ball control
@@ -165,6 +165,10 @@ class Tracker:
         team_2_num_frames = team_ball_control_till_frame[team_ball_control_till_frame==2].shape[0]
         team_1 = team_1_num_frames/(team_1_num_frames+team_2_num_frames)
         team_2 = team_2_num_frames/(team_1_num_frames+team_2_num_frames)
+
+        cv2.putText(frame, f"Team 1 Ball Control: {team_1*100:.2f}%",(1400,900), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 3)
+        cv2.putText(frame, f"Team 2 Ball Control: {team_2*100:.2f}%",(1400,950), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0), 3)
+
 
         return frame
 
