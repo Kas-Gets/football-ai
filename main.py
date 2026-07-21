@@ -21,7 +21,7 @@ def main():
     camera_movement_estimator = CameraMovementEstimator(video_frames[0])
     camera_movement_per_frame = camera_movement_estimator.get_camera_movement(video_frames,
                                                                               read_from_stub=True,
-                                                                              stub_path='stub/camera_movement_stub.pkl')
+                                                                              stub_path='stubs/camera_movement_stub.pkl')
 
 
     
