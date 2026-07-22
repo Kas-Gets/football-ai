@@ -25,9 +25,9 @@ def main():
     camera_movement_per_frame = camera_movement_estimator.get_camera_movement(video_frames,
                                                                               read_from_stub=True,
                                                                               stub_path='stubs/camera_movement_stub.pkl')
+    camera_movement_estimator.add_adjust_position_to_tracks(tracks, camera_movement_per_frame)
 
 
-    
     #Interpolate Ball Position
     tracks['ball'] = tracker.interpolate_ball_positions(tracks['ball'])
 
